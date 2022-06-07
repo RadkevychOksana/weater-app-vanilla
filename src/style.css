@@ -1,3 +1,49 @@
+@import url("https://fonts.googleapis.com/css2?family=Roboto&display=swap");
+body {
+  font-family: "Roboto", sans-serif;
+  background-color: #fcfefe;
+}
 h1 {
-  color: blue;
+  color: #155263;
+  font-size: 24px;
+}
+ul {
+  margin: 0;
+  padding: 0;
+}
+li {
+  list-style: none;
+  color: #8d8f92;
+  font-size: 16px;
+  line-height: 20px;
+  margin: 0;
+  padding: 0;
+}
+.weather-app-wrapper {
+  max-width: 600px;
+  margin: 30px auto;
+}
+.weather-app {
+  padding: 20px;
+  border-radius: 10px;
+  background-color: #eaf6f6;
+}
+.float-left {
+  float: left;
+}
+.overview {
+  margin-bottom: 20px;
+}
+.weather-temperature img {
+  margin-right: 6px;
+}
+.weather-temperature strong {
+  color: #155263;
+  font-size: 48px;
+  line-height: 1;
+}
+.weather-temperature .units {
+  position: relative;
+  font-size: 16px;
+  top: -32px;
 }
