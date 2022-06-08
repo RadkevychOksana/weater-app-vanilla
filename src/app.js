@@ -36,10 +36,16 @@ function showTemp(response) {
   windSpeed.innerHTML = Math.round(response.data.wind.speed);
   let date = document.getElementById("date");
   date.innerHTML = formatDate(response.data.dt * 1000);
+  let icon = document.getElementById("icon");
+  icon.setAttribute(
+    "src",
+    `https://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
+  );
+  icon.setAttribute("src", response.data.weather[0].description);
 }
 
 // Api Request
-let cityName = "New York";
+let cityName = "Berlin";
 let apiKey = "149e1223e69e53cd644a15607bc75a82";
 let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
 axios.get(apiUrl).then(showTemp);
