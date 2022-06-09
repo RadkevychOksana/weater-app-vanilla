@@ -42,12 +42,14 @@ function showTemp(response) {
     `http://openweathermap.org/img/wn/${response.data.weather[0].icon}@2x.png`
   );
   icon.setAttribute("alt", response.data.weather[0].description);
+  celsiusTemp = response.data.main.temp;
 }
 
 function search(cityName) {
   // Api Request
   let apiKey = "149e1223e69e53cd644a15607bc75a82";
   let apiUrl = `https://api.openweathermap.org/data/2.5/weather?q=${cityName}&appid=${apiKey}&units=metric`;
+
   axios.get(apiUrl).then(showTemp);
 }
 
@@ -60,3 +62,28 @@ function handleSubmit(event) {
 
 let form = document.getElementById("search-form");
 form.addEventListener("submit", handleSubmit);
+
+function showFahrenhaitTemp(event) {
+  event.preventDefault();
+  let temp = document.getElementById("temp");
+  let showFahrenhaitTemp = (celsiusTemp * 9) / 5 + 32;
+  temp.innerHTML = Math.round(showFahrenhaitTemp);
+  // remove active class
+  celsiusLink.classList.remove("link-secondary");
+  fahrenheitLink.classList.add("link-secondary");
+}
+
+let fahrenheitLink = document.getElementById("fahrenheit-link");
+fahrenheitLink.addEventListener("click", showFahrenhaitTemp);
+
+function showCelsiusTemp(event) {
+  event.preventDefault();
+  let temp = document.getElementById("temp");
+  temp.innerHTML = Math.round(celsiusTemp);
+  celsiusLink.classList.add("link-secondary");
+  fahrenheitLink.classList.remove("link-secondary");
+}
+
+let celsiusTemp = null;
+let celsiusLink = document.getElementById("celsius-link");
+celsiusLink.addEventListener("click", showCelsiusTemp);
