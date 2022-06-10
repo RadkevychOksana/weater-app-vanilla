@@ -13,7 +13,7 @@ ul {
 }
 li {
   list-style: none;
-  color: #8d8f92;
+  color: black;
   font-size: 16px;
   line-height: 20px;
   margin: 0;
@@ -50,4 +50,7 @@ li:first-letter {
   position: relative;
   font-size: 16px;
   top: -32px;
+}
+.weather-app-forecast-temp {
+  color: #155263;
 }

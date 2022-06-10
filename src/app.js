@@ -87,3 +87,33 @@ function showCelsiusTemp(event) {
 let celsiusTemp = null;
 let celsiusLink = document.getElementById("celsius-link");
 celsiusLink.addEventListener("click", showCelsiusTemp);
+
+// add HTML forecast days
+function addForecastDay() {
+  let forecastDay = document.getElementById("forecast-day");
+  let forecastHtml = `<div class="row">`;
+  let daysShort = ["Sun", "Mon", "Tues", "Wed", "Thu"];
+  daysShort.forEach(addColumns);
+  function addColumns(day) {
+    forecastHtml =
+      forecastHtml +
+      `
+  <div class="col-2">
+                <div class="weather-app-forecast-day">${day}</div>
+                <img
+                  src="http://openweathermap.org/img/wn/04n@2x.png"
+                  alt="#"
+                  width="50px"
+                />
+                <div class="weather-app-forecast-temp">
+                  <span class="weather-app-forecast-temp-max fw-bold"> 27°&nbsp-</span>
+                  </span>
+                  <span class="weather-app-forecast-temp-min">17°</span>
+                </div>
+              </div>
+  `;
+  }
+  forecastHtml = forecastHtml + `</div>`;
+  forecastDay.innerHTML = forecastHtml;
+}
+addForecastDay();
