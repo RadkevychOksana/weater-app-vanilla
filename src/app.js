@@ -22,6 +22,59 @@ function formatDate(timestemp) {
   return `${day} ${hour}:${minutes}`;
 }
 
+function formatDay(date) {
+  let forecastDate = new Date(date * 1000);
+  let forecastDay = forecastDate.getDay();
+  let days = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+  let currentForecastDay = days[forecastDay];
+  return currentForecastDay;
+}
+function addForecastDay(response) {
+  let forecast = response.data.daily;
+
+  let forecastDay = document.getElementById("forecast-day");
+  let forecastHtml = `<div class="row">`;
+  forecast.forEach(addColumns);
+
+  function addColumns(forecastDay, index) {
+    if (index < 6) {
+      forecastHtml =
+        forecastHtml +
+        `
+  <div class="col-2">
+                <div class="weather-app-forecast-day">${formatDay(
+          forecastDay.dt
+        )}</div>
+                <img
+                  src="http://openweathermap.org/img/wn/${forecastDay.weather[0].icon
+        }@2x.png"
+                  alt="#"
+                  width="50px"
+                />
+                <div class="weather-app-forecast-temp">
+                  <span class="weather-app-forecast-temp-max fw-bold"> ${Math.round(
+          forecastDay.temp.max
+        )}°&nbsp-</span>
+                  </span>
+                  <span class="weather-app-forecast-temp-min">${Math.round(
+          forecastDay.temp.min
+        )}°</span>
+                </div>
+              </div>
+  `;
+    }
+  }
+  forecastHtml = forecastHtml + `</div>`;
+  forecastDay.innerHTML = forecastHtml;
+}
+
+function getCoords(coordinates) {
+  let apiKey = "149e1223e69e53cd644a15607bc75a82";
+  let lat = coordinates.lat;
+  let lon = coordinates.lon;
+  let apiUrl = `https://api.openweathermap.org/data/2.5/onecall?lat=${lat}&lon=${lon}&appid=${apiKey}&units=metric`;
+  axios.get(apiUrl).then(addForecastDay);
+}
 // Current Temperature
 function showTemp(response) {
   let temp = document.getElementById("temp");
@@ -43,6 +96,7 @@ function showTemp(response) {
   );
   icon.setAttribute("alt", response.data.weather[0].description);
   celsiusTemp = response.data.main.temp;
+  getCoords(response.data.coord);
 }
 
 function search(cityName) {
@@ -59,10 +113,6 @@ function handleSubmit(event) {
   let cityInput = document.getElementById("city-input");
   search(cityInput.value);
 }
-
-let form = document.getElementById("search-form");
-form.addEventListener("submit", handleSubmit);
-
 function showFahrenhaitTemp(event) {
   event.preventDefault();
   let temp = document.getElementById("temp");
@@ -72,10 +122,6 @@ function showFahrenhaitTemp(event) {
   celsiusLink.classList.remove("link-secondary");
   fahrenheitLink.classList.add("link-secondary");
 }
-
-let fahrenheitLink = document.getElementById("fahrenheit-link");
-fahrenheitLink.addEventListener("click", showFahrenhaitTemp);
-
 function showCelsiusTemp(event) {
   event.preventDefault();
   let temp = document.getElementById("temp");
@@ -83,37 +129,14 @@ function showCelsiusTemp(event) {
   celsiusLink.classList.add("link-secondary");
   fahrenheitLink.classList.remove("link-secondary");
 }
-
 let celsiusTemp = null;
+let form = document.getElementById("search-form");
+form.addEventListener("submit", handleSubmit);
+
+let fahrenheitLink = document.getElementById("fahrenheit-link");
+fahrenheitLink.addEventListener("click", showFahrenhaitTemp);
+
 let celsiusLink = document.getElementById("celsius-link");
 celsiusLink.addEventListener("click", showCelsiusTemp);
 
-// add HTML forecast days
-function addForecastDay() {
-  let forecastDay = document.getElementById("forecast-day");
-  let forecastHtml = `<div class="row">`;
-  let daysShort = ["Sun", "Mon", "Tues", "Wed", "Thu"];
-  daysShort.forEach(addColumns);
-  function addColumns(day) {
-    forecastHtml =
-      forecastHtml +
-      `
-  <div class="col-2">
-                <div class="weather-app-forecast-day">${day}</div>
-                <img
-                  src="http://openweathermap.org/img/wn/04n@2x.png"
-                  alt="#"
-                  width="50px"
-                />
-                <div class="weather-app-forecast-temp">
-                  <span class="weather-app-forecast-temp-max fw-bold"> 27°&nbsp-</span>
-                  </span>
-                  <span class="weather-app-forecast-temp-min">17°</span>
-                </div>
-              </div>
-  `;
-  }
-  forecastHtml = forecastHtml + `</div>`;
-  forecastDay.innerHTML = forecastHtml;
-}
-addForecastDay();
+search("Paris");
